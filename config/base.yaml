@@ -1,0 +1,28 @@
+bundles:
+    class:
+        # Cookie
+        Plattry\Http\Cookie\CookieInterface: Plattry\Http\Cookie\Cookie
+        Plattry\Http\Cookie\CookieProcessor: Plattry\Http\Cookie\CookieProcessor
+
+        # session
+        Plattry\Http\Session\DriverInterface: Plattry\Http\Session\FileDriver
+        Plattry\Http\Session\SessionInterface: Plattry\Http\Session\Session
+        Plattry\Http\Session\SessionProcessor: Plattry\Http\Session\SessionProcessor
+
+        # log
+        Plattry\Log\Driver\DriverInterface: Plattry\Log\Driver\FileDriver
+        Psr\Log\LoggerInterface: Plattry\Log\Logger
+
+    directory:
+        # controller
+        - app\Controller
+
+routes:
+    attribute:
+        directory:
+            - app\Controller
+
+server:
+    ip: 127.0.0.1
+    port: 9000
+    onMessage: [App\HttpKernel, onMessage]

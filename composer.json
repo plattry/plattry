@@ -1,0 +1,43 @@
+{
+    "name": "plattry/plattry",
+    "description": "The plattry PHP framework",
+    "keywords": [
+        "plattry",
+        "framework",
+        "event-driven"
+    ],
+    "type": "project",
+    "license": "GPL-3.0",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "exclude-from-classmap": [
+            "/test/"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Andrew Lee",
+            "email": "sixser@foxmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.0",
+        "ext-ev": "*",
+        "ext-pcntl": "*",
+        "ext-posix": "*",
+        "ext-sysvmsg": "*",
+        "ext-yaml": "*",
+        "plattry/config": "<1.0",
+        "plattry/http": "<1.0",
+        "plattry/ioc": "<1.0",
+        "plattry/log": "<1.0",
+        "plattry/network": "<1.0",
+        "plattry/process": "<1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5.5"
+    }
+}

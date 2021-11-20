@@ -9,8 +9,6 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * Json响应
- * Class JsonResponse
- * @package App\Common
  */
 class JsonResponse
 {
@@ -18,7 +16,7 @@ class JsonResponse
      * Json flag
      * @var int
      */
-    public static int $flag = JSON_FORCE_OBJECT|JSON_UNESCAPED_UNICODE;
+    public static int $flag = JSON_UNESCAPED_UNICODE;
 
     /**
      * Http factory
@@ -29,7 +27,6 @@ class JsonResponse
     /**
      * 设置json flag
      * @param int $flag
-     * @return void
      */
     public static function setFlag(int $flag): void
     {
@@ -57,13 +54,17 @@ class JsonResponse
      */
     public static function create(mixed $data, int $code = ErrorCode::SUCCESS, string $message = ""): ResponseInterface
     {
+        $headers = [
+            "Content-Type" => "application/json;charset=UTF-8"
+        ];
         $content = json_encode([
             "data" => $data,
             "code" => $code,
             "message" => $message ?: ErrorCode::phrase($code)
         ], static::$flag);
 
-        $response = static::getFactory()->createResponse();
+        $response = static::getFactory()->createResponse()
+            ->wiThHeaders($headers)->withProtocolVersion("1.1");
         $response->getBody()->write($content);
 
         return $response;

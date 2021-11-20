@@ -6,7 +6,8 @@ error_reporting(E_ALL);
 
 include dirname(__DIR__) . "/vendor/autoload.php";
 
-define("BASE_DIR", dirname(__DIR__));
+$env = getenv("environ") ?: "dev";
+$root = dirname(__DIR__);
 
-$kernel = new \App\HttpKernel();
+$kernel = new \App\Http\Application($root, $env);
 $kernel->run();

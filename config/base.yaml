@@ -5,24 +5,25 @@ bundles:
         Plattry\Http\Cookie\CookieProcessor: Plattry\Http\Cookie\CookieProcessor
 
         # session
-        Plattry\Http\Session\DriverInterface: Plattry\Http\Session\FileDriver
         Plattry\Http\Session\SessionInterface: Plattry\Http\Session\Session
         Plattry\Http\Session\SessionProcessor: Plattry\Http\Session\SessionProcessor
-
-        # log
-        Plattry\Log\Driver\DriverInterface: Plattry\Log\Driver\FileDriver
-        Psr\Log\LoggerInterface: Plattry\Log\Logger
+        Plattry\Http\Session\DriverInterface: Plattry\Http\Session\FileDriver
 
     directory:
-        # controller
-        - app\Controller
+        # Http controller, handler
+        - app\Http\Controller
+        - app\Http\Handler
 
 routes:
     attribute:
         directory:
-            - app\Controller
+            - app\Http\Controller
 
 server:
-    ip: 127.0.0.1
+    ip: 0.0.0.0
     port: 9000
-    onMessage: [App\HttpKernel, onMessage]
+    event:
+        - App\Http\Handler\ConnectHandler
+        - App\Http\Handler\MessageHandler
+        - App\Http\Handler\CloseHandler
+        - App\Http\Handler\ErrorHandler

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Controller;
+namespace App\Http\Controller;
 
 use App\Common\JsonResponse;
 use Plattry\Http\Cookie\CookieInterface;

@@ -6,8 +6,6 @@ namespace App\Common;
 
 /**
  * 错误码及原因
- * Class ErrorCode
- * @package App\Common
  */
 class ErrorCode
 {

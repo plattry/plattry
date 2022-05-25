@@ -2,22 +2,23 @@
 
 declare(strict_types = 1);
 
-namespace App\Http\Handler;
+namespace App\Bootstrap\Handler;
 
+use App\Bootstrap\BootEvent;
 use Plattry\Dispatcher\EventHandlerInterface;
-use Plattry\Network\Event\ConnectEvent;
+use Plattry\Log\LoggerFactory;
 
 /**
- * Handle network connect-event.
+ * Load logger.
  */
-class ConnectHandler implements EventHandlerInterface
+class LoggerHandler implements EventHandlerInterface
 {
     /**
      * @inheritdoc
      */
     public function getName(): string
     {
-        return ConnectEvent::class;
+        return BootEvent::class;
     }
 
     /**
@@ -30,11 +31,13 @@ class ConnectHandler implements EventHandlerInterface
 
     /**
      * @inheritdoc
-     * @param ConnectEvent $event
-     * @return ConnectEvent
+     * @param BootEvent $event
+     * @return BootEvent
      */
     public function handle(object $event): object
     {
+        $event->getContainer()->set(\Psr\Log\LoggerInterface::class, LoggerFactory::createStdLogger());
+
         return $event;
     }
 }

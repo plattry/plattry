@@ -4,55 +4,29 @@ declare(strict_types = 1);
 
 namespace App\Http\Controller;
 
-use App\Common\JsonResponse;
-use Plattry\Http\Cookie\CookieInterface;
-use Plattry\Http\Cookie\CookieProcessor;
+use App\Http\Common\JsonResponse;
+use App\Http\Processor\CorsProcessor;
+use App\Http\Processor\ErrorProcessor;
 use Plattry\Http\Routing\Route;
-use Plattry\Http\Session\SessionInterface;
-use Plattry\Http\Session\SessionProcessor;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 
-/**
- * Index控制器
- * Class IndexController
- * @package App\Controller
- */
-#[Route("index")]
+#[Route("index", ["options"], [CorsProcessor::class, ErrorProcessor::class])]
 class IndexController
 {
-    /**
-     * Session对象
-     * @var SessionInterface
-     */
-    protected SessionInterface $session;
+    protected LoggerInterface $logger;
 
-    /**
-     * Cookie对象
-     * @var CookieInterface
-     */
-    protected CookieInterface $cookie;
-
-    /**
-     * Index控制器构造方法
-     * @param SessionInterface $session
-     * @param CookieInterface $cookie
-     */
-    public function __construct(SessionInterface $session, CookieInterface $cookie)
+    public function __construct(LoggerInterface $logger)
     {
-        $this->session = $session;
-        $this->cookie = $cookie;
+        $this->logger = $logger;
     }
 
-    /**
-     * Index方法
-     * @param ServerRequestInterface $request 客户端请求实例
-     * @param array $args 路由参数
-     * @return ResponseInterface
-     */
-    #[Route("index", methods: ["get", "post"], middlewares: [CookieProcessor::class, SessionProcessor::class])]
+    #[Route("index", ["get", "post"])]
     public function index(ServerRequestInterface $request, array $args = []): ResponseInterface
     {
-        return JsonResponse::create("Hello, this is IndexController::index()!");
+        $this->logger->info("http request is coming~");
+
+        return JsonResponse::create("hello, plattry! ");
     }
 }

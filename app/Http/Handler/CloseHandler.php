@@ -4,15 +4,16 @@ declare(strict_types = 1);
 
 namespace App\Http\Handler;
 
+use Plattry\Dispatcher\EventHandlerInterface;
 use Plattry\Network\Event\CloseEvent;
 
 /**
- * 客户端连接断开时触发
+ * Handle network close-event.
  */
-class CloseHandler
+class CloseHandler implements EventHandlerInterface
 {
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getName(): string
     {
@@ -20,7 +21,7 @@ class CloseHandler
     }
 
     /**
-     * @return int
+     * @inheritdoc
      */
     public function getPriority(): int
     {
@@ -28,10 +29,11 @@ class CloseHandler
     }
 
     /**
+     * @inheritdoc
      * @param CloseEvent $event
      * @return CloseEvent
      */
-    public function handle(CloseEvent $event): CloseEvent
+    public function handle(object $event): object
     {
         return $event;
     }

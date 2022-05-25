@@ -4,15 +4,16 @@ declare(strict_types = 1);
 
 namespace App\Http\Handler;
 
+use Plattry\Dispatcher\EventHandlerInterface;
 use Plattry\Network\Event\ErrorEvent;
 
 /**
- * 连接异常时触发
+ * Handle network error-event.
  */
-class ErrorHandler
+class ErrorHandler implements EventHandlerInterface
 {
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getName(): string
     {
@@ -20,7 +21,7 @@ class ErrorHandler
     }
 
     /**
-     * @return int
+     * @inheritdoc
      */
     public function getPriority(): int
     {
@@ -28,10 +29,11 @@ class ErrorHandler
     }
 
     /**
+     * @inheritdoc
      * @param ErrorEvent $event
      * @return ErrorEvent
      */
-    public function handle(ErrorEvent $event): ErrorEvent
+    public function handle(object $event): object
     {
         return $event;
     }

@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Http\Handler;
 
+use App\Http\Common\JsonResponse;
+use Plattry\Dispatcher\EventHandlerInterface;
 use Plattry\Http\Handler;
 use Plattry\Http\Routing\RouterInterface;
 use Plattry\Network\Event\MessageEvent;
@@ -12,9 +14,9 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * 接收到Http包时触发
+ * Handle network message-event.
  */
-class MessageHandler
+class MessageHandler implements EventHandlerInterface
 {
     /**
      * @var ContainerInterface
@@ -37,7 +39,7 @@ class MessageHandler
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getName(): string
     {
@@ -45,7 +47,7 @@ class MessageHandler
     }
 
     /**
-     * @return int
+     * @inheritdoc
      */
     public function getPriority(): int
     {
@@ -53,14 +55,16 @@ class MessageHandler
     }
 
     /**
+     * @inheritdoc
      * @param MessageEvent $event
      * @return MessageEvent
      */
-    public function handle(MessageEvent $event): MessageEvent
+    public function handle(object $event): object
     {
         try {
             $container = clone $this->container;
 
+            // Get request from connection, and back response after handing.
             $protocol = $container->get(ProtocolInterface::class);
 
             $request = $protocol->getRequestFromConnection($event->getConnection());
@@ -72,7 +76,13 @@ class MessageHandler
             $response = $handler->handle($request);
             $protocol->backResponseToConnection($event->getConnection(), $response);
         } catch (\Throwable $t) {
-            $event->getConnection()->close();
+            if (isset($protocol)) {
+                $response = JsonResponse::getFactory()->createResponse(500)->withProtocolVersion("1.1");
+                $protocol->backResponseToConnection($event->getConnection(), $response);
+            } else {
+                $event->getConnection()->close();
+            }
+            
             $this->logger->error($t->getMessage());
         } finally {
             return $event;

@@ -1,0 +1,28 @@
+{
+    "name": "plattry/plattry",
+    "description": "The plattry project template",
+    "keywords": [
+        "plattry",
+        "template"
+    ],
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/",
+            "Bootstrap\\": "bootstrap/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Aaron Lee",
+            "email": "sixser@foxmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.1",
+        "plattry/event": "^1.0",
+        "plattry/kit": "^1.0"
+    }
+}
